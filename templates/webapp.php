@@ -8,7 +8,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg: var(--tg-theme-bg-color, #0f141a);
+            --bg: var(--tg-theme-bg-color, #94a3b8);
             --text: var(--tg-theme-text-color, #eaeef3);
             --hint: var(--tg-theme-hint-color, #94a3b8);
             --link: var(--tg-theme-link-color, #6ab3f3);
@@ -51,7 +51,7 @@
 
         .hint {
             color: var(--hint);
-            margin-top: 4px;
+            margin-top: 4px
         }
 
         form {
@@ -112,7 +112,6 @@
             color: var(--text);
             outline: none;
             transition: border-color .2s, box-shadow .2s;
-            box-sizing: border-box;
         }
 
         .field input:focus,
@@ -185,8 +184,8 @@
             color: var(--btn-text);
             box-shadow: 0 8px 22px rgba(46, 166, 255, .35);
             transition: transform .12s ease, filter .2s ease;
-            box-sizing: border-box;
             width: 100%;
+            box-sizing: border-box;
         }
 
         .btn:active {
@@ -217,7 +216,6 @@
 
 <body>
     <div class="container">
-        <h1>Кабинет заявок</h1>
         <p class="hint">Выберите тип запроса и заполните форму</p>
 
         <!-- Выпадающий список типа заявки -->
@@ -225,10 +223,9 @@
             <label for="type">Тип запроса</label>
             <div class="select-wrap">
                 <select id="type" name="type">
-                    <option value="new_order">🆕 Новый клиент — Новый заказ</option>
-                    <option value="old_order">🔁 Действующий клиент — Заказ</option>
+                    <option value="new_order">🆕 Новый клиент</option>
+                    <option value="old_order">🔁 Действующий клиент</option>
                     <option value="request_document">📄 Запрос документа</option>
-                    <option value="request_pdf">🖨️ Запрос PDF</option>
                 </select>
             </div>
         </div>
@@ -236,25 +233,25 @@
         <form id="orderForm" autocomplete="on" novalidate>
             <!-- Блок: новый/старый заказ -->
             <section id="sec-order" class="section">
-                <div class="chip">Детали заказа</div>
+                <!-- <div class="chip">Детали заказа</div> -->
                 <div class="row" style="margin-top:10px">
                     <div class="field">
                         <label>Название франшизы</label>
-                        <input name="franchise" required />
+                        <input name="franchise" />
                     </div>
                     <div class="field">
                         <label>Название организации</label>
-                        <input name="organization" required />
+                        <input name="organization" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="field">
                         <label>Стоимость лида</label>
-                        <input name="cost" type="number" step="0.01" min="0" required />
+                        <input name="cost" type="number" step="0.01" min="0" />
                     </div>
                     <div class="field">
                         <label>Количество лидов</label>
-                        <input name="leads" type="number" min="1" required />
+                        <input name="leads" type="number" min="1" />
                     </div>
                 </div>
                 <div class="field">
@@ -262,7 +259,7 @@
                     <textarea name="comment" placeholder="Дополнительные детали (необязательно)"></textarea>
                 </div>
 
-                <!-- Загрузка файла: обязательно для «Новый клиент — Новый заказ» -->
+                <!-- Загрузка файла: обязательно на бэкенде для «Новый клиент — Новый заказ» -->
                 <div class="field">
                     <label>Приложить документ</label>
                     <input name="document" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" />
@@ -270,29 +267,66 @@
                 </div>
             </section>
 
-            <!-- Блок: запрос документа/PDF -->
+            <!-- Блок: запрос документа -->
             <section id="sec-doc" class="section hidden">
-                <div class="chip">Запрос документа</div>
+                <!-- <div class="chip">Запрос документа</div> -->
+
                 <div class="row" style="margin-top:10px">
                     <div class="field">
-                        <label>Название организации</label>
-                        <input name="organization2" />
+                        <label>Название организации <span class="hint">(обязательно)</span></label>
+                        <input name="organization2" required />
                     </div>
                     <div class="field">
-                        <label>Номер заказа</label>
-                        <input name="order_number" />
+                        <label>Тип документа</label>
+                        <div class="select-wrap">
+                            <select name="doc_type">
+                                <option value="">— Не указано —</option>
+                                <option>Акт выполненных работ</option>
+                                <option>Акт сверки</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="field">
-                        <label>Дата заказа</label>
-                        <input name="order_date" type="date" />
+                        <label>ИНН</label>
+                        <input name="inn" inputmode="numeric" pattern="[0-9]{10,12}" placeholder="10–12 цифр" />
+                    </div>
+                    <div class="field">
+                        <label>Номер счёта</label>
+                        <input name="invoice_number" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label>Период c</label>
+                        <input name="period_from" type="date" />
+                    </div>
+                    <div class="field">
+                        <label>Период по</label>
+                        <input name="period_to" type="date" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label>Формат</label>
+                        <div class="select-wrap">
+                            <select name="format">
+                                <option value="">— Любой —</option>
+                                <option>PDF</option>
+                                <option>ЭДО</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="field">
                         <label>Итоговая сумма</label>
                         <input name="total_cost" type="number" step="0.01" min="0" />
                     </div>
                 </div>
+
                 <div class="field">
                     <label>Комментарий</label>
                     <textarea name="comment2" placeholder="Дополнительные детали (необязательно)"></textarea>
@@ -304,6 +338,7 @@
             </div>
 
             <div id="status" class="status"></div>
+
         </form>
     </div>
 
@@ -349,7 +384,6 @@
             const type = typeSel.value;
             const manager_id = tg?.initDataUnsafe?.user?.id || 0;
 
-            // Для нового клиента — напомним про файл (мягкая проверка на фронте)
             if (type === 'new_order' && !form.document.files[0]) {
                 err('Для нового клиента нужно приложить документ');
                 return;
@@ -360,17 +394,21 @@
             fd.append('manager_id', manager_id);
 
             if (type === 'new_order' || type === 'old_order') {
-                fd.append('franchise', form.franchise.value.trim());
-                fd.append('organization', form.organization.value.trim());
-                fd.append('cost', form.cost.value || '0');
-                fd.append('leads', form.leads.value || '0');
-                fd.append('comment', form.comment.value.trim());
+                fd.append('franchise', (form.franchise.value || '').trim());
+                fd.append('organization', (form.organization.value || '').trim());
+                fd.append('cost', form.cost.value || '');
+                fd.append('leads', form.leads.value || '');
+                fd.append('comment', (form.comment.value || '').trim());
                 if (form.document.files[0]) fd.append('document', form.document.files[0]);
             } else {
-                fd.append('organization', (form.organization2.value || '').trim());
-                fd.append('order_number', (form.order_number.value || '').trim());
-                fd.append('order_date', form.order_date.value || '');
-                fd.append('total_cost', form.total_cost.value || '0');
+                fd.append('organization', (form.organization2.value || '').trim()); // единственное обязательное поле
+                fd.append('doc_type', (form.doc_type.value || '').trim());
+                fd.append('inn', (form.inn.value || '').trim());
+                fd.append('invoice_number', (form.invoice_number.value || '').trim());
+                fd.append('period_from', form.period_from.value || '');
+                fd.append('period_to', form.period_to.value || '');
+                fd.append('format', (form.format.value || '').trim()); // PDF или ЭДО
+                fd.append('total_cost', form.total_cost.value || '');
                 fd.append('comment', (form.comment2.value || '').trim());
             }
 
